@@ -23,7 +23,7 @@ class NewsController
             if(isset($this->args[1]) && is_numeric($this->args[1])) {
                 return  $this->news->one($this->args[1]);
             } else {
-                throw new Exception('Incorrect argument "id"', 404);
+                throw new HttpException('Incorrect argument "id"', 404);
             }
         }
     }
@@ -34,7 +34,7 @@ class NewsController
             if(isset($_POST['title']) && isset($_POST['content'])) {
                 return  $this->news->add($_POST['title'], $_POST['content']); 
             } else {
-                throw new Exception('Arguments "title" or "content" for add not found', 404);
+                throw new HttpException('Arguments "title" or "content" for add not found', 404);
             }
         }
     }
@@ -47,7 +47,7 @@ class NewsController
             if(isset($data['id']) && isset($data['title']) && isset($data['content'])) {
                 return $this->news->update($data['id'], $data['title'], $data['content']); 
             } else {
-                throw new Exception('Arguments "id" or "title" or "content" for update not found', 404);
+                throw new HttpException('Arguments "id" or "title" or "content" for update not found', 404);
             }
         }
     }
@@ -58,7 +58,7 @@ class NewsController
             if(isset($this->args[1]) && is_numeric($this->args[1])) {
                 return $this->news->delete($this->args[1]); 
             } else {
-                throw new Exception('Arguments "id" for delete not found', 404);
+                throw new HttpException('Arguments "id" for delete not found', 404);
             }
         }
     }

@@ -21,7 +21,11 @@ const DB_PASS = '';
 /*
 *  Requires
 */
+// Exceptions
+require_once 'exceptions/HttpException.php';
+
 // Core
+require_once 'core/Router.php';
 require_once 'core/db/DbInstance.php';
 require_once 'core/db/DbModel.php';
 require_once 'core/Registry.php';
@@ -31,3 +35,6 @@ require_once 'models/News.php';
 
 // Controllers
 require_once 'controllers/NewsController.php';
+
+// Config
+require_once 'config/routes.php';

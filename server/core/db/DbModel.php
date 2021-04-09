@@ -20,12 +20,7 @@
         {
             $errInfo = $query->errorInfo();
             if($errInfo[0] !== PDO::ERR_NONE){
-                // Hard code
-                http_response_code(500);
-                die(json_encode([
-                    "status" => false,
-                    "message" => "DB Error:" . $errInfo[2],
-                ]));
+                throw new HttpException("DB Error:" . $errInfo[2], 500);  
             }
             return true;
         }

@@ -20,7 +20,7 @@ class News
         $sql = "SELECT * FROM `news` WHERE `id`=:id";
         $result = $this->dbconnection->dbQuery($sql, ["id" => $id])->fetch();
         if(!$result) {
-            throw new Exception("Error! No news with id $id", 404);
+            throw new HttpException("Error! No news with id $id", 404);
         }
         return $result;
     }
