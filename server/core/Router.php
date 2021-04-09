@@ -18,17 +18,22 @@ class Router
     }
 
     public static function dispatch($url) {
-        $url = self::removeQueryString($url);
-
         if(self::matchRoute($url)) {
-            $controller = 'app\controllers\\' . self::$route['prefix'] . self::$route['controller'] . 'Controller';
-
+            $controller = self::$route['controller'] . 'Controller';
             if(class_exists($controller)) {
                 $controllerObject = new $controller(self::$route);
-                $action = self::lowerCamelCase(self::$route['action'] . 'Action');
+                $action = self::lowerCamelCase(self::$route['action']);
+                $param  = self::$route['param'];
+                
                 if(method_exists($controllerObject, $action)) {
-                    $controllerObject->$action();
-                    $controllerObject->getView();
+                    $class = new ReflectionClass($controllerObject);
+                    $method = $class->getMethod($action);
+                    $params = $method->getParameters();
+                    if($params === []) {
+                        return $controllerObject->$action();
+                    } else {
+                        return $controllerObject->$action($param);
+                    }
                 }
                 else {
                     throw new \Exception("Метод $controller::$action не найден!", 404);
@@ -57,12 +62,11 @@ class Router
                     $route['action'] = 'index';
                 }
 
-                if(!isset($route['prefix'])) {
-                    $route['prefix'] = '';
+                if(empty($route['param'])) {
+                    $route['param'] = null;
                 }
-                else {
-                    $route['prefix'] .= '\\';
-                }
+
+                
                 $route['controller'] = self::upperCamelCase($route['controller']);
                 self::$route = $route;
                 return true;
